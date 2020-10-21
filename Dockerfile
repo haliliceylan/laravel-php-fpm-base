@@ -32,6 +32,8 @@ RUN docker-php-ext-install \
       gd \
       soap
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer && composer global require hirak/prestissimo --no-plugins --no-scripts
+
 COPY php.ini /usr/local/etc/php/php.ini
 COPY php-opocache-cfg.ini /usr/local/etc/php/conf.d/php-opocache-cfg.ini
 COPY nginx-site.conf /etc/nginx/sites-enabled/default
