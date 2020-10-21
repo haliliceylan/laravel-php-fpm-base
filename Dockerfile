@@ -2,7 +2,7 @@ FROM php:7.3.15-fpm
 
 #set our application folder as an environment variable
 ENV APP_HOME /var/www/html
-
+WORKDIR $APP_HOME
 #install requirements
 RUN apt-get update -y \
     && apt-get install -y \
@@ -31,5 +31,12 @@ RUN docker-php-ext-install \
       bcmath \
       gd \
       soap
+
+COPY php.ini /usr/local/etc/php/php.ini
+COPY php-opocache-cfg.ini /usr/local/etc/php/conf.d/php-opocache-cfg.ini
+COPY nginx-site.conf /etc/nginx/sites-enabled/default
+COPY docker-entrypoint.sh /etc/entrypoint.sh
+
 EXPOSE 80 443
-CMD ["sh", "service nginx start && php-fpm"]
+
+CMD ["sh", "/etc/entrypoint.sh"]
